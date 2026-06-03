@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block body_class %}template-searchresults{% endblock %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block content %}
+
+<div class="hero-glow" style="width:400px;height:400px;top:-100px;right:-50px;position:absolute;pointer-events:none;"></div>
+
+<!-- ── Header ── -->
+<section class="hero-section relative pt-8 sm:pt-12">
+  <div class="section-panel max-w-5xl">
+
+    <div class="hero-badge reveal" style="transition-delay:0.1s;">
+      <span></span>
+      <span>Recherche</span>
+    </div>
+
+    <h1 class="section-title reveal mb-6 sm:mb-8" style="transition-delay:0.1s;">
+      {% if search_query %}
+        Résultats pour <span class="gradient-text">"{{ search_query }}"</span>
+      {% else %}
+        Rechercher un article
+      {% endif %}
+    </h1>
+
+    <!-- Search form -->
+    <form action="{% url 'search' %}" method="get" class="reveal search-form max-w-xl" style="transition-delay:0.2s;">
+      <div class="flex-1">
+        <input
+          type="text"
+          name="query"
+          {% if search_query %}value="{{ search_query }}"{% endif %}
+          placeholder="Mot-clé, titre, sujet..."
+          class="input-field"
+          autofocus
+        />
+      </div>
+      <button type="submit" class="btn-coral flex-shrink-0 whitespace-nowrap">
+        Chercher
+      </button>
+    </form>
+
+  </div>
+</section>
+
+<!-- ── Results ── -->
+<section class="pb-12 sm:pb-16 md:pb-20">
+  <div class="section-panel max-w-5xl">
+
+    {% if search_results %}
+
+    <!-- Count -->
+    <div class="reveal flex flex-wrap items-center gap-2 sm:gap-3 mb-6 sm:mb-8 pb-4 sm:pb-5" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+      <span style="font-family:'Space Mono',monospace;font-size:clamp(0.65rem, 1.2vw, 0.75rem);color:rgba(255,255,255,0.35);">
+        {{ search_results|length }} résultat{% if search_results|length > 1 %}s{% endif %} trouvé{% if search_results|length > 1 %}s{% endif %}
+      </span>
+    </div>
+
+    <!-- Results list -->
+    <ul class="flex flex-col gap-3 sm:gap-4 md:gap-5" style="list-style:none;padding:0;">
+      {% for result in search_results %}
+      <li class="reveal post-card glow-border rounded-xl p-4 sm:p-5 md:p-6"
+          style="background:var(--dark-800); transition-delay: {{ forloop.counter0 }}00ms;">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold mb-2" style="font-size:clamp(0.95rem, 2.5vw, 1.1rem);">
+              <a href="{% pageurl result %}"
+                 style="text-decoration:none;color:white;transition:color 0.2s; word-break: break-word;"
+                 onmouseover="this.style.color='var(--coral)'"
+                 onmouseout="this.style.color='white'">
+                {{ result }}
+              </a>
+            </h3>
+            {% if result.search_description %}
+            <p style="font-size:clamp(0.8rem, 1.8vw, 0.95rem);color:rgba(255,255,255,0.45);line-height:1.6;">
+              {{ result.search_description|truncatechars:160 }}
+            </p>
+            {% endif %}
+          </div>
+          <a href="{% pageurl result %}"
+             style="flex-shrink:0;color:var(--coral);text-decoration:none;font-size:clamp(1rem, 2vw, 1.2rem);opacity:0.7;transition:opacity 0.2s,transform 0.2s;margin-top:0.25rem;"
+             onmouseover="this.style.opacity='1';this.style.transform='translateX(4px)'"
+             onmouseout="this.style.opacity='0.7';this.style.transform='translateX(0)'">→</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Pagination -->
+    {% if search_results.has_previous or search_results.has_next %}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-3 sm:gap-4 mt-10 sm:mt-12 reveal">
+      {% if search_results.has_previous %}
+      <a href="{% url 'search' %}?query={{ search_query|urlencode }}&page={{ search_results.previous_page_number }}"
+         class="btn-outline-coral w-full sm:w-auto justify-center" style="font-size:clamp(0.75rem, 1.8vw, 0.85rem);padding:clamp(0.65rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);">
+        ← Précédent
+      </a>
+      {% endif %}
+      {% if search_results.has_next %}
+      <a href="{% url 'search' %}?query={{ search_query|urlencode }}&page={{ search_results.next_page_number }}"
+         class="btn-coral w-full sm:w-auto justify-center" style="font-size:clamp(0.75rem, 1.8vw, 0.85rem);padding:clamp(0.65rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);">
+        Suivant →
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% elif search_query %}
+    <!-- No results -->
+    <div class="reveal flex flex-col items-center py-12 sm:py-16 md:py-20">
+      <div class="w-12 sm:w-14 h-12 sm:h-14 rounded-full flex items-center justify-center mb-4"
+           style="background:rgba(255,107,74,0.08);border:1px solid rgba(255,107,74,0.2);">
+        <svg width="24" height="24" fill="none" stroke="#ff6b4a" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+        </svg>
+      </div>
+      <p class="font-bold text-lg mb-2">Aucun résultat</p>
+      <p style="color:rgba(255,255,255,0.4);font-size:clamp(0.8rem, 1.8vw, 0.95rem);margin-bottom:8px;">
+        Aucun article ne correspond à <span style="color:var(--coral);">"{{ search_query }}"</span>
+      </p>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;">Essayez avec d'autres mots-clés.</p>
+    </div>
+
+    {% else %}
+    <!-- Initial state (no query yet) -->
+    <div class="reveal flex flex-col items-center py-20">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-4"
+           style="background:rgba(255,107,74,0.08);border:1px solid rgba(255,107,74,0.2);">
+        <svg width="24" height="24" fill="none" stroke="#ff6b4a" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+        </svg>
+      </div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;">
+        Saisissez un mot-clé pour trouver des articles.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

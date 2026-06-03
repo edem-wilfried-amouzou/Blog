@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<div class="hero-glow" style="width:400px;height:400px;top:-100px;right:-100px;position:absolute;pointer-events:none;"></div>
+
+<!-- ── Header ── -->
+<section class="py-20 relative">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="reveal flex items-center gap-2 mb-4">
+      <span class="w-2 h-2 rounded-full" style="background:var(--coral);"></span>
+      <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;">
+        Filtre par tag
+      </span>
+    </div>
+
+    {% if request.GET.tag %}
+    <h1 class="reveal text-3xl md:text-4xl font-extrabold mb-3" style="transition-delay:0.1s;">
+      Articles tagués
+      <span class="gradient-text">#{{ request.GET.tag }}</span>
+    </h1>
+    {% else %}
+    <h1 class="reveal text-3xl md:text-4xl font-extrabold mb-3" style="transition-delay:0.1s;">
+      Tags
+    </h1>
+    {% endif %}
+
+    <div class="reveal flex items-center gap-3 mt-6" style="transition-delay:0.2s;">
+      <a href="/blog/" class="btn-outline-coral" style="font-size:0.8rem;padding:8px 16px;display:inline-flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        Tous les articles
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Posts ── -->
+<section class="pb-20">
+  <div class="max-w-6xl mx-auto px-6">
+
+    {% if blogposts %}
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for post in blogposts %}
+      {% with post_specific=post.specific %}
+      {% with thumbnail=post_specific.main_image %}
+
+      <article class="reveal post-card glow-border rounded-xl overflow-hidden"
+               style="background: var(--dark-800); transition-delay: {{ forloop.counter0 }}00ms;">
+
+        {% if thumbnail %}
+        <div class="overflow-hidden" style="height: 180px;">
+          {% image thumbnail fill-600x300 as thumb_img %}
+          <img src="{{ thumb_img.url }}" alt="{{ post.title }}"
+               class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+        </div>
+        {% else %}
+        <div class="flex items-center justify-center" style="height:160px;background:var(--dark-700);">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,107,74,0.08);border:1px solid rgba(255,107,74,0.2);display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" fill="none" stroke="#ff6b4a" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
+            </svg>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="p-5">
+          <p style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--coral);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+            {{ post_specific.date|date:"d M Y" }}
+          </p>
+          <h2 class="font-bold mb-4 leading-snug" style="font-size:1rem;">
+            <a href="{% pageurl post %}"
+               style="text-decoration:none;color:white;transition:color 0.2s;"
+               onmouseover="this.style.color='var(--coral)'"
+               onmouseout="this.style.color='white'">
+              {{ post.title }}
+            </a>
+          </h2>
+          <a href="{% pageurl post %}" class="btn-outline-coral" style="font-size:0.7rem;padding:6px 14px;">Lire →</a>
+        </div>
+
+      </article>
+      {% endwith %}
+      {% endwith %}
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="reveal flex flex-col items-center py-20">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-4"
+           style="background:rgba(255,107,74,0.08);border:1px solid rgba(255,107,74,0.2);">
+        <svg width="24" height="24" fill="none" stroke="#ff6b4a" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/>
+        </svg>
+      </div>
+      <p class="font-bold text-lg mb-2">Aucun article avec ce tag</p>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Essayez un autre tag ou parcourez tous les articles.</p>
+      <a href="/blog/" class="btn-coral mt-6" style="font-size:0.85rem;">Voir tous les articles</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% block body_class %}template-homepage{% endblock %}
+
+{% block content %}
+
+<section class="hero-section relative">
+  <div class="section-panel">
+
+    <div class="hero-badge reveal" style="transition-delay: 0.1s;">
+      <span></span>
+      <span>Blog — Développement &amp; Tech</span>
+    </div>
+
+    <h1 class="section-title reveal" style="transition-delay: 0.2s;">{{ page.title }}</h1>
+
+    <p class="lead-text reveal mb-8 sm:mb-10" style="transition-delay: 0.3s;">
+      {% if page.body %}{{ page.body|richtext }}{% else %}Articles, réflexions et expériences autour du développement web, blockchain et au-delà.{% endif %}
+    </p>
+
+    <div class="section-actions reveal" style="transition-delay: 0.4s;">
+      <a href="/articles/" class="btn-coral flex-1 sm:flex-none">Lire mes articles</a>
+      <a href="/search/" class="btn-outline-coral flex-1 sm:flex-none">Rechercher</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

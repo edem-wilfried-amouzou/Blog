@@ -1,0 +1,129 @@
+{% load static wagtailcore_tags wagtailuserbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {% block extra_meta %}{% endblock %}
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        <link rel="stylesheet" href="{% static 'css/interface.css' %}">
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+
+        <!-- Google Fonts: Syne + Space Mono (portfolio fonts) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    </head> 
+
+  <body class="noise app-shell">
+
+  {% wagtailuserbar %}
+
+  <!-- ── Grid Background ── -->
+  <div class="fixed inset-0 opacity-[0.04] pointer-events-none"
+       style="background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 60px 60px; z-index: 0;">
+  </div>
+
+  <!-- ── Navbar ── -->
+  <nav id="navbar" role="navigation" aria-label="Main Navigation"
+       class="site-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="navbar-inner max-w-7xl mx-auto flex items-center justify-between">
+
+      <!-- Logo -->
+      <a href="/" class="site-brand">
+        <span>EWA</span><span>.</span><span class="brand-label">blog</span>
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="hidden md:flex items-center gap-8 nav-list mx-auto">
+        <li><a href="/" class="nav-link font-semibold">Accueil</a></li>
+        <li><a href="/articles/" class="nav-link font-semibold">Articles</a></li>
+        <li><a href="/search/" class="nav-link font-semibold">Recherche</a></li>
+      </ul>
+ 
+      <!-- CTA -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://edem-wilfried-amouzou.netlify.app/" target="_blank" class="btn-outline-coral">
+          Portfolio
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="menu-toggle" class="mobile-toggle md:hidden flex flex-col gap-1.5" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="menu-bar block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="menu-bar block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="menu-bar block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden mobile-menu-panel absolute left-0 right-0 top-full z-40">
+      <div class="mobile-menu-header">
+        <span class="mobile-menu-title">Navigation</span>
+      </div>
+      <ul class="flex flex-col gap-4" style="list-style: none;">
+        <li><a href="/" class="font-semibold">Accueil</a></li>
+        <li><a href="/articles/" class="font-semibold">Articles</a></li>
+        <li><a href="/search/" class="font-semibold">Recherche</a></li>
+        <li><a href="https://edem-wilfried-amouzou.netlify.app/" target="_blank" class="btn-coral">
+          Portfolio
+        </a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Page Content ── -->
+  <main class="page-main section-panel">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer relative z-10">
+    <div class="footer-inner section-panel">
+      <div class="footer-main max-w-6xl mx-auto w-full">
+        <p class="footer-note">
+          © {% now "Y" %} Edem Wilfried AMOUZOU — Tous droits réservés
+        </p>
+        <div class="footer-links">
+          <a href="/articles/" class="nav-link font-semibold">Articles</a>
+          <a href="/search/" class="nav-link font-semibold">Recherche</a>
+          <a href="https://edem-wilfried-amouzou.netlify.app/" target="_blank" class="nav-link font-semibold" style="color: var(--coral);">Portfolio ↗</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+        {# Global javascript #}
+        <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
+
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
