@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# Quitter en cas d'erreur
+# Exit on error
 set -o errexit
 
-npm install && npm run build && pip install -r requirements.txt
+# Installer les dépendances Node et générer le CSS
+npm install
+npm run build
 
+# Installer les dépendances Python via Poetry
+poetry install --no-root
 
-# 4. Collecter tous les fichiers statiques (CSS + VOS FICHIERS JS)
-# Whitenoise s'occupera de les servir efficacement
+# Appliquer les migrations
 python manage.py collectstatic --noinput
-
-# 5. Appliquer les migrations sur votre base de données externe
 python manage.py migrate
