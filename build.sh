@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
-# Exit on error
 set -o errexit
 
-# Installer les dépendances Node et générer le CSS
+# 1. Installer les dépendances Node et build le CSS
 npm install
 npm run build
 
-# Installer les dépendances Python via Poetry
-poetry install --no-root
+# 2. Installer les dépendances Python via pip (la méthode standard)
+pip install -r requirements.txt
 
-# Appliquer les migrations
+# 3. Migrations et statics
 python manage.py collectstatic --noinput
 python manage.py migrate
