@@ -1,2 +1,7 @@
 mysite/static/css/tailwindcss
 mysite/static/css/tailwindcss
+.env
+.venv/
+__pycache__/
+db.sqlite3
+.idea/
