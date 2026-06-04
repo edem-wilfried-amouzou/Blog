@@ -1,11 +1,11 @@
 {
   "name": "mysite",
-  "version": "1.0.0",
+  "dependencies": {
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  },
   "scripts": {
     "build": "tailwindcss -i ./mysite/static/css/input.css -o ./mysite/static/css/output.css --minify"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.0",
-    "daisyui": "^4.10.0"
   }
 }
