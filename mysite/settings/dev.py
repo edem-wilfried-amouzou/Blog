@@ -1,13 +1,16 @@
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+$$^o+v!@w&sq-q@2ptcxhh61da5#c_q1r@ub4-ir^4qw80784"
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-for-dev-only')
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 

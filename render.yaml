@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mysite
+    runtime: python
+    buildCommand: "./build.sh"
+    # Utilisation de Gunicorn (WSGI) au lieu de Uvicorn (ASGI)
+    startCommand: "gunicorn mysite.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mysite.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: NODE_VERSION
+        value: "20"
+      # DATABASE_URL sera configurée manuellement dans le Dashboard Render
