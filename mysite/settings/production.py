@@ -8,6 +8,11 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'eja-blog.up.railway.app',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://eja-blog.up.railway.app',
+]
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
