@@ -104,7 +104,7 @@
             <div class="author-pill min-w-0">
               {% for author in authors %}
               {% if author.author_image %}
-              {% image author.author_image fill-28x28 as author_img %}
+              {% image author.author_image fill-35x35 as author_img %}
               <img src="{{ author_img.url }}" alt="{{ author.name }}" class="author-avatar" />
               {% endif %}
               <span class="truncate">{{ author.name }}</span>
