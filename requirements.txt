@@ -3,7 +3,6 @@ anyascii==0.3.3
 anyio==4.14.0
 asgiref==3.11.1
 beautifulsoup4==4.14.3
-boto3==1.43.32
 botocore==1.43.32
 brotli==1.2.0
 certifi==2026.5.20
@@ -17,7 +16,6 @@ Django==6.0.5
 django-filter==25.2
 django-modelcluster==6.5
 django-permissionedforms==0.1
-django-storages==1.14.6
 django-stubs-ext==6.0.5
 django-supabase-storage==1.0.1
 django-taggit==6.1.0
