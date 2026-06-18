@@ -209,9 +209,10 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'eja-site' # Le nom de votre bucket
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME') # Le nom de votre bucket
 AWS_S3_ENDPOINT_URL = f"https://{os.environ.get('AWS_ACCOUNT_ID')}.r2.cloudflarestorage.com"
 AWS_S3_REGION_NAME = 'auto'
 
 # L'URL publique de votre bucket R2
-AWS_S3_CUSTOM_DOMAIN = 'pub-d40b490f8480436595a5f4d36d8591f4.r2.dev'
+AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')
+AWS_DEFAULT_ACL = None
