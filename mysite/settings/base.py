@@ -158,8 +158,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "/static/"
 
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
 
 # Default storage settings
 # See https://docs.djangoproject.com/en/6.0/ref/settings/#std-setting-STORAGES
@@ -232,4 +230,9 @@ else:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-# DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage_backends.SupabaseMediaStorage'
+
+    # MEDIA_ROOT = BASE_DIR / "media"
+    # MEDIA_URL = "/media/"
+
+WAGTAILIMAGES_STORAGE = 'django.core.files.storage.DefaultStorage'
+DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage.SupabaseStorage'
