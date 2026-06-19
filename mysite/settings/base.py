@@ -207,18 +207,29 @@ WAGTAILDOCS_MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
 import os
 
 
-# Utilisez le package django-supabase-storage
-STORAGES = {
-    "default": {
-        "BACKEND": "django_supabase_storage.storage_backends.SupabaseMediaStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
-
-# Variables récupérées depuis vos Settings Supabase > API
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-SUPABASE_BUCKET = 'media' # Le nom du bucket que vous venez de créer
-DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage_backends.SupabaseMediaStorage'
+SUPABASE_BUCKET = os.environ.get('SUPABASE_BUCKET', 'media')
+
+# On vérifie si nous sommes en phase de build (en testant si les variables existent)
+if SUPABASE_URL and SUPABASE_KEY:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django_supabase_storage.storage_backends.SupabaseMediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    # Si on est en phase de build (pas de variables), on utilise le stockage local
+    # Cela permet à collectstatic de s'exécuter sans essayer de se connecter à Supabase
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+# DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage_backends.SupabaseMediaStorage'
