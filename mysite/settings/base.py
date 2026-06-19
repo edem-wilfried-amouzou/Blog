@@ -210,7 +210,7 @@ import os
 # Utilisez le package django-supabase-storage
 STORAGES = {
     "default": {
-        "BACKEND": "django_supabase_storage.storage.SupabaseStorage",
+        "BACKEND": "django_supabase_storage.storage_backends.SupabaseMediaStorage",
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
@@ -221,3 +221,4 @@ STORAGES = {
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
 SUPABASE_BUCKET = 'media' # Le nom du bucket que vous venez de créer
+DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage_backends.SupabaseMediaStorage'
