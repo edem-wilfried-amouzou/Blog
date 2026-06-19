@@ -213,7 +213,7 @@ SUPABASE_BUCKET = os.environ.get('SUPABASE_BUCKET', 'media')
 if SUPABASE_URL and SUPABASE_KEY:
     STORAGES = {
         "default": {
-            "BACKEND": "django_supabase_storage.storage_backends.SupabaseMediaStorage",
+            "BACKEND": "django_supabase_storage.storage.SupabaseStorage", # Utilisez le backend officiel,
         },
         "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
