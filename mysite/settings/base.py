@@ -234,5 +234,5 @@ else:
     # MEDIA_ROOT = BASE_DIR / "media"
     # MEDIA_URL = "/media/"
 
-WAGTAILIMAGES_STORAGE = 'django.core.files.storage.DefaultStorage'
-DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage.SupabaseStorage'
+# WAGTAILIMAGES_STORAGE = 'django.core.files.storage.DefaultStorage'
+# DEFAULT_FILE_STORAGE = 'django_supabase_storage.storage.SupabaseStorage'
