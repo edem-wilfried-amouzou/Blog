@@ -7,6 +7,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'eja-blog.up.railway.app',
+    'myblog-nes7.onrender.com',
+    '.onrender.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
