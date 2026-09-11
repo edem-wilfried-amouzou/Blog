@@ -13,6 +13,8 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://eja-blog.up.railway.app',
+    'https://myblog-nes7.onrender.com',
+    'https://.onrender.com',
 ]
 
 STORAGES = {
